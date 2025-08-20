@@ -1,3 +1,121 @@
+# Programs in PYQs
+
+## **1. Find the second largest element in an array (5m – May 23)**
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract SecondLargest {
+    uint[] public numbers;
+
+    function add(uint _num) public {
+        numbers.push(_num);
+    }
+
+    function getSecondLargest() public view returns (uint) {
+        uint largest = 0;
+        uint second = 0;
+
+        for (uint i = 0; i < numbers.length; i++) {
+            if (numbers[i] > largest) {
+                second = largest;
+                largest = numbers[i];
+            } else if (numbers[i] > second && numbers[i] != largest) {
+                second = numbers[i];
+            }
+        }
+        return second;
+    }
+}
+```
+
+* **Key logic:** one loop to track both largest and second largest.
+* **Data stored on-chain** using a dynamic array.
+
+
+## **2. Check if a number is prime (5m – Dec 22)**
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract PrimeCheck {
+    function isPrime(uint num) public pure returns (bool) {
+        if (num < 2) return false;
+        for (uint i = 2; i * i <= num; i++) {
+            if (num % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+* **Logic:** divides `num` by all integers up to √num.
+* **Marked `pure`** since it doesn’t read/write blockchain state.
+
+
+## **3. Multi-level inheritance (10m – Dec 24, Dec 22)**
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+// Base contract
+contract A {
+    function getA() public pure returns (string memory) {
+        return "This is Contract A";
+    }
+}
+
+// Derived from A
+contract B is A {
+    function getB() public pure returns (string memory) {
+        return "This is Contract B";
+    }
+}
+
+// Derived from B (and indirectly from A)
+contract C is B {
+    function getC() public pure returns (string memory) {
+        return "This is Contract C";
+    }
+}
+```
+
+* **Multi-level:** C → B → A.
+* Functions from A and B are inherited by C automatically.
+
+
+
+## **4. Single inheritance (10m – May 23)**
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+// Base contract
+contract Parent {
+    function getParent() public pure returns (string memory) {
+        return "This is Parent Contract";
+    }
+}
+
+// Derived contract using single inheritance
+contract Child is Parent {
+    function getChild() public pure returns (string memory) {
+        return "This is Child Contract";
+    }
+}
+```
+
+* **Single inheritance:** Child inherits only from Parent.
+* Functions from Parent are accessible in Child directly.
+
+
+
 ### Example programs
 `Simple Calculator`
 ```solidity
